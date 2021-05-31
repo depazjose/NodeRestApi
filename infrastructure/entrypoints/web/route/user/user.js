@@ -47,11 +47,21 @@ app.post('/usuario', function(req, res) {
     let usuario = new Usuario({
         nombre: body.nombre,
         email: body.email,
-        password: bcrypt.hashSync(body.password, 10),
+        password: body.password,
         role: body.role
     });
+    console.log("before validate");
+
+    usuario.validate;
+    console.log("after validate");
+
+    if (body.password) {
+        usuario.password = bcrypt.hashSync(usuario.password, 10);
+    }
 
     usuario.save((err, usuarioDB) => {
+
+        console.log("save");
         if (err) {
             return res.status(400).json({
                 ok: false,
